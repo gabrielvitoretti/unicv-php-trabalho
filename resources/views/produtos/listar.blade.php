@@ -13,7 +13,7 @@
     <div class="alert alert-success" role="alert">{{ session('mensagem') }}</div>
     @endif
 
-    <p><a href="/produtos/novo" class="btn btn-dark">Novo Produto</a></p>
+    <p><a href="/usuarios/novo" class="btn btn-dark">Novo Produto</a></p>
     <table class="table">
         <thead>
             <tr>
@@ -28,9 +28,9 @@
                 <td>{{ $produto->id }}</td>
                 <td>{{ $produto->descricao }}</td>
                 <td>
-                  <a href="/produtos/{{ $produto->id }}" class="btn btn-info">Visualizar</a>
-                  <a href="/produtos/editar/{{ $produto->id }}" class="btn btn-warning">Editar</a>
-                  <a href="/produtos/excluir/{{ $produto->id }}" class="btn btn-danger">Excluir</a>
+                  <a href="/usuarios/{{ $produto->id }}" class="btn btn-info">Visualizar</a>
+                  <a href="/usuarios/editar/{{ $produto->id }}" class="btn btn-warning">Editar</a>
+                  <a href="/usuarios/excluir/{{ $produto->id }}" class="btn btn-danger">Excluir</a>
                 </td>
             </tr>
             @endforeach

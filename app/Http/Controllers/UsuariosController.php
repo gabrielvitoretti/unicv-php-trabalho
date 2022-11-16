@@ -2,84 +2,98 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class UsuariosController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        // $usuarios = DB::table('users')->select('id', 'name', 'email')->get();
-        $usuarios = Usuario::all();
-        return response()->json($usuarios, 200);
+    public function index() {
+        $dados = DB::table('usuarios')->get();
+
+        return view('usuarios.listar', ['usuarios' => $dados]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
+    public function show($id) {
+        $usuarios = DB::table('usuarios')->where('id', $id)->first();
+
+        return view('usuarios.detalhes', ['usuarios' => $usuarios]);
+    }
+
+    public function create() {
+        return view('usuarios.novo');
+    }
+
+    public function store(Request $request) {
         $validated = Validator::make($request->all(), [
-            'name'     => 'required',
-            'email'    => 'required|email',
-            'password' => 'required',
+            'nome'  => 'required|min:3|max:120',
+            'email'      => 'required|email',
+            'idade' => 'required|numeric|min:1|max:3',
+            'telefone' => 'required|numeric|min:11|max:11',
+        ], [], [
+            'descricao' => 'descrição do produto',
+            'preco' => 'preço'
         ]);
 
-        if ($validated->fails()) {
-            return response()->json(['mensagem' => 'Falhou!'], 422);
+        if($validated->fails()) {
+            return redirect('usuarios/novo')->withErrors($validated)->withInput();
+        } else {
+            DB::table('usuarios')->insert([
+                'nome'      => $request->nome,
+                'email'     => $request->email,
+                'idade'     => $request->idade,
+                'telefone'  => $request->telefone
+            ]);
+
+            return redirect('usuarios')->with('mensagem', 'Usuário cadastrado.');
         }
-
-        $data = [
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => $request->password,
-        ];
-
-        Usuario::create($data);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function edit($id)
     {
-        $usuario = Usuario::find($id);
-        return response()->json($usuario, 200);
+        if (! DB::table('usuarios')->where('id', $id)->first()) {
+            return redirect('usuarios')->with('mensagem', 'Usuário não encontrado.');
+        }
+        
+        $usuario = DB::table('usuarios')->where('id', $id)->first();
+        return view('usuarios.editar', ['usuarios' => $usuario]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+        if (! DB::table('usuarios')->where('id', $id)->first()) {
+            return redirect('usuarios')->with('mensagem', 'Usuário não encontrado.');
+        }
+
+        $validated = Validator::make($request->all(), [
+            'nome'  => 'required|min:3|max:255',
+            'email'      => 'required|numeric',
+            'idade' => 'required|numeric',
+            'telefone' => 'required|numeric|min:11|max:11'
+        ]);
+
+        if($validated->fails()) {
+            return redirect('usuarios/editar/'.$id)->withErrors($validated);
+        } else {
+            $usuarios = [
+                'nome'      => $request->nome,
+                'email'     => $request->email,
+                'idade'     => $request->idade,
+                'telefone'  => $request->telefone
+            ];
+
+            DB::table('produtos')->where('id', $id)->update($usuarios);
+            return redirect('produtos')->with('mensagem', 'Usuário alterado.');
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        if (! DB::table('usuarios')->where('id', $id)->first()) {
+            return redirect('usuarios')->with('mensagem', 'Usuários não encontrado.');
+        }
+
+        DB::table('usuarios')->where('id', $id)->delete();
+        return redirect('usuarios')->with('mensagem', 'Usuários excluído.');
     }
 }

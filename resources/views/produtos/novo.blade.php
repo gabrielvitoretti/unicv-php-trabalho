@@ -17,7 +17,7 @@
     </ul>
     @endif
 
-    <form action="/produtos/salvar" method="post" class="p-5">
+    <form action="/usuarios/salvar" method="post" class="p-5">
         @csrf
         <div class="form-group">
             <label for="descricao">Descrição</label>
