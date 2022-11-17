@@ -8,29 +8,29 @@
     <script src="/bootstrap.js"></script>
   </head>
   <body>
-    <h1>Listagem de Produtos</h1>
+    <h1>Listagem de Usuários</h1>
     @if (session('mensagem'))
     <div class="alert alert-success" role="alert">{{ session('mensagem') }}</div>
     @endif
 
-    <p><a href="/usuarios/novo" class="btn btn-dark">Novo Produto</a></p>
+    <p><a href="/usuarios/novo" class="btn btn-dark">Novo Usuário</a></p>
     <table class="table">
         <thead>
             <tr>
                 <th>Código</th>
-                <th>Descrição</th>
+                <th>Nome</th>
                 <th>Opções</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($produtos as $produto)
+            @foreach ($usuarios as $usuario)
             <tr>
-                <td>{{ $produto->id }}</td>
-                <td>{{ $produto->descricao }}</td>
+                <td>{{ $usuario->id }}</td>
+                <td>{{ $usuario->nome }}</td>
                 <td>
-                  <a href="/usuarios/{{ $produto->id }}" class="btn btn-info">Visualizar</a>
-                  <a href="/usuarios/editar/{{ $produto->id }}" class="btn btn-warning">Editar</a>
-                  <a href="/usuarios/excluir/{{ $produto->id }}" class="btn btn-danger">Excluir</a>
+                  <a href="/usuarios/{{ $usuario->id }}" class="btn btn-info">Visualizar</a>
+                  <a href="/usuarios/editar/{{ $usuario->id }}" class="btn btn-warning">Editar</a>
+                  <a href="/usuarios/excluir/{{ $usuario->id }}" class="btn btn-danger">Excluir</a>
                 </td>
             </tr>
             @endforeach

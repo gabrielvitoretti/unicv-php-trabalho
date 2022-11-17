@@ -8,7 +8,7 @@
     <script src="/bootstrap.js"></script>
   </head>
   <body class="p-5">
-    <h1>Novo Produto</h1>
+    <h1>Novo Usuário</h1>
     @if ($errors->any())
     <ul class="alert alert-danger">
     @foreach ($errors->all() as $error)
@@ -20,16 +20,20 @@
     <form action="/usuarios/salvar" method="post" class="p-5">
         @csrf
         <div class="form-group">
-            <label for="descricao">Descrição</label>
-            <input type="text" class="form-control" name="descricao" value="{{ old('descricao') }}">
+            <label for="nome">Nome</label>
+            <input type="text" class="form-control" name="nome" value="{{ old('nome') }}">
         </div>
         <div class="form-group">
-            <label for="preco">Preço</label>
-            <input type="number" class="form-control" name="preco" value="{{ old('preco') }}">
+            <label for="email">E-mail</label>
+            <input type="text" class="form-control" name="email" value="{{ old('email') }}">
         </div>
         <div class="form-group">
-            <label for="quantidade">Quantidade</label>
-            <input type="text" class="form-control" name="quantidade" value="{{ old('quantidade') }}">
+            <label for="idade">Idade</label>
+            <input type="text" class="form-control" name="idade" value="{{ old('idade') }}">
+        </div>
+        <div class="form-group">
+            <label for="telefone">Telefone</label>
+            <input type="text" class="form-control" name="Telefone" value="{{ old('telefone') }}">
         </div>
         <input type="submit" class="btn btn-success mt-5" value="Cadastrar">
     </form>
